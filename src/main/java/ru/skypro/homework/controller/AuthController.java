@@ -1,11 +1,5 @@
 package ru.skypro.homework.controller;
 
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,19 +19,10 @@ import static ru.skypro.homework.dto.RoleDto.USER;
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
 @RequiredArgsConstructor
-@Tag(name = "Auth Rest Controller", description = "CRUD операции с авторизацией")
 public class AuthController {
 
     private final AuthService authService;
 
-    @Operation(summary = "login", description = "", tags={ "Авторизация"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
-                    schema = @Schema(implementation = LoginReqDto.class))),
-            @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = "")),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
-            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginReqDto req) {
         if (authService.login(req.getUsername(), req.getPassword())) {
@@ -47,14 +32,6 @@ public class AuthController {
         }
     }
 
-    @Operation(summary = "register", description = "", tags={ "Авторизация"})
-    @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK",content = @Content(mediaType = "*/*",
-                    schema = @Schema(implementation = RegReqDto.class))),
-            @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = "")),
-            @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
-            @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
-            @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegReqDto req) {
         RoleDto role = req.getRole() == null ? USER : req.getRole();
