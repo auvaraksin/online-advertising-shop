@@ -22,7 +22,7 @@ public class AdsComment {
     @JoinColumn(name = "user_id")
     private User author;
     @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "ads_id")
+    @JoinColumn(name = "comment")
     private Ads pk;
     private OffsetDateTime createdAt;
     private String text;
