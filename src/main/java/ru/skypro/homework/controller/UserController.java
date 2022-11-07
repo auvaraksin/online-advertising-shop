@@ -59,7 +59,6 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
                     schema = @Schema(implementation = NewPasswordDto.class))),
-            @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})

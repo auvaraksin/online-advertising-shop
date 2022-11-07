@@ -46,10 +46,9 @@ public class AdsController {
 
     @Operation(summary = "addAds",  description = "Добавить объявления", tags={ "Объявления"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK",
+            @ApiResponse(responseCode = "201", description = "Created",
                     content = @Content(mediaType = "*/*",
                             schema = @Schema(implementation = AdsDto.class))),
-            @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
@@ -83,9 +82,8 @@ public class AdsController {
     }
     @Operation(summary = "addAdsComments", description = "Сохранить отзыв", tags={ "Отзывы"})
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
+            @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = "*/*",
                     schema = @Schema(implementation = AdsCommentDto.class))),
-            @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
