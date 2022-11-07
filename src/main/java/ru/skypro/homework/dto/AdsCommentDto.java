@@ -6,8 +6,8 @@ import java.time.LocalDateTime;
 
 @Data
 public class AdsCommentDto {
-    private LocalDateTime createAt;
-    private Integer author;
     private Integer pk;
+    private Integer author;
+    private LocalDateTime createdAt;
     private String text;
 }

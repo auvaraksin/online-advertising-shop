@@ -2,43 +2,30 @@ package ru.skypro.homework.mapper;
 
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
-import ru.skypro.homework.dto.AdsCommentDto;
+import org.mapstruct.ReportingPolicy;
 import ru.skypro.homework.dto.AdsDto;
 import ru.skypro.homework.dto.CreateAdsDto;
 import ru.skypro.homework.entity.Ads;
-import ru.skypro.homework.entity.AdsComment;
 
 import java.util.List;
 
-@Mapper
+@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AdsMapper {
 
+    @Mapping(source = "ads.id", target = "pk")
     @Mapping(source = "author.id", target = "author")
     AdsDto adsToAdsDto(Ads ads);
 
-    List<AdsDto> adsToAdsDto(List<Ads> ads);
-
+    @Mapping(source = "pk", target = "id")
     @Mapping(source = "author", target = "author.id")
-    @Mapping(target = "description", ignore = true)
     Ads adsDtoToAds(AdsDto adsDto);
+
+    List<AdsDto> adsListToAdsDtoList(List<Ads> adsList);
 
     List<Ads> adsDtoToAds(List<AdsDto> adsDto);
 
-    @Mapping(target = "author", ignore = true)
-    @Mapping(target = "pk", ignore = true)
+//    @Mapping(target = "author", ignore = true)
+//    @Mapping(target = "pk", ignore = true)
     Ads createAdsToAds(CreateAdsDto createAdsDto);
 
-    @Mapping(source = "author.id", target = "author")
-    @Mapping(source = "pk.pk", target = "pk")
-    AdsCommentDto adsCommentToAdsCommentDto(AdsComment adsComment);
-
-    List<AdsCommentDto> adsCommentToAdsCommentDto(List<AdsComment> adsComment);
-
-    @Mapping(source = "author", target = "author.id")
-    @Mapping(source = "pk", target = "pk.pk")
-    @Mapping(target = "id", ignore = true)
-    @Mapping(target = "createdAt", ignore = true)
-    AdsComment adsCommentDtoToAdsComment(AdsCommentDto adsCommentDto);
-
-    List<AdsComment> adsCommentDtoToAdsComment(List<AdsCommentDto> adsCommentDto);
 }

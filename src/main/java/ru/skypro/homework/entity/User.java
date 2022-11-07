@@ -1,39 +1,110 @@
 package ru.skypro.homework.entity;
 
-import lombok.Data;
+import lombok.*;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
+import javax.persistence.*;
 import java.util.List;
-import java.util.Set;
+import java.util.Objects;
 
-@Data
-@Entity(name = "users")
+@Entity(name = "User")
+@Getter
+@Setter
+@ToString(exclude = {"password"})
+@RequiredArgsConstructor
+@Table(
+        name = "users",
+        uniqueConstraints = {
+                @UniqueConstraint(name = "user_email_unique",
+                        columnNames = "user_email"),
+                @UniqueConstraint(name = "user_phone_unique",
+                columnNames = "user_phone")
+        }
+)
 public class User {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @SequenceGenerator(
+            name = "user_sequence",
+            sequenceName = "user_sequence",
+            allocationSize = 1
+    )
+    @GeneratedValue(
+            strategy = GenerationType.SEQUENCE,
+            generator = "user_sequence"
+    )
+    @Column(
+            name = "user_id",
+            updatable = false
+    )
     private Integer id;
-    private String email;
+
+    @Column(
+            name = "user_first_name",
+            nullable = false
+    )
     private String firstName;
+
+    @Column(
+            name = "user_last_name",
+            nullable = false
+    )
     private String lastName;
+
+    @Column(
+            name = "user_email",
+            nullable = false
+    )
+    private String email;
+
+    @Column(
+            name = "user_phone",
+            nullable = true)
     private String phone;
+
+    @Column(
+            name = "user_password",
+            nullable = false
+    )
     private String password;
-    @OneToMany
+
+    @Column(
+            name = "user_role",
+            nullable = false
+    )
+    @Enumerated(EnumType.STRING)
+    private Role role;
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @Column(
+            name = "ads_ids",
+            nullable = true
+    )
     List<Ads> adsList;
-    @OneToMany
+
+    @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
+    @Column(
+            name = "ads_comment_ids",
+            nullable = true
+    )
     List<AdsComment> adsCommentList;
-    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinTable(
-            name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))
-    private Set<Role> roles;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        User user = (User) o;
+        return id.equals(user.id)
+                && firstName.equals(user.firstName)
+                && lastName.equals(user.lastName)
+                && email.equals(user.email)
+                && Objects.equals(phone, user.phone)
+                && password.equals(user.password)
+                && role == user.role
+                && Objects.equals(adsList, user.adsList)
+                && Objects.equals(adsCommentList, user.adsCommentList);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, firstName, lastName, email, phone, password, role, adsList, adsCommentList);
+    }
 }

@@ -17,7 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import ru.skypro.homework.dto.NewPasswordDto;
-import ru.skypro.homework.dto.ResponseWrapperUser;
+import ru.skypro.homework.dto.ResponseWrapperUserDto;
 import ru.skypro.homework.dto.UserDto;
 
 import java.security.Principal;
@@ -34,13 +34,13 @@ public class UserController {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "*/*",
-                            schema = @Schema(implementation = ResponseWrapperUser.class))),
+                            schema = @Schema(implementation = ResponseWrapperUserDto.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @GetMapping("/me")
-    public ResponseEntity<ResponseWrapperUser> getUsers() {
-        return ResponseEntity.ok(new ResponseWrapperUser());
+    public ResponseEntity<ResponseWrapperUserDto> getUsers() {
+        return ResponseEntity.ok(new ResponseWrapperUserDto());
     }
 
     @Operation(summary = "updateUser", description = "Обновить пользователя", tags = {"Пользователи",})

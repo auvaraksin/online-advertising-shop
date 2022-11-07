@@ -5,9 +5,10 @@ import lombok.Data;
 @Data
 public class RegReqDto {
     private String password;
-    private RoleDto role;
     private String username;
-    private String firstName;
-    private String lastName;
-    private String phone;
+    private RoleDto role;
+    /* Changes've been made according to the openapi_v4.yaml */
+//    private String firstName;
+//    private String lastName;
+//    private String phone;
 }
