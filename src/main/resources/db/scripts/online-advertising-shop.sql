@@ -16,8 +16,8 @@ CREATE TABLE IF NOT EXISTS users
 CREATE TABLE IF NOT EXISTS ads
 (
     ads_id  SERIAL PRIMARY KEY,
-    user_id BIGINT REFERENCES users (user_id) NOT NULL,
-    ads_comment_id BIGINT,
+    user_id BIGINT FOREIGN KEY REFERENCES users (user_id) NOT NULL,
+    ads_comment_id BIGINT FOREIGN KEY REFERENCES ads_comments (ads_comment_id) NOT NULL,
     ads_image_url VARCHAR (255) NOT NULL,
     ads_price INTEGER NOT NULL,
     ads_title VARCHAR (255) NOT NULL,
@@ -27,14 +27,8 @@ CREATE TABLE IF NOT EXISTS ads
 CREATE TABLE IF NOT EXISTS ads_comments
 (
     ads_comments_id   SERIAL PRIMARY KEY,
-    user_id BIGINT REFERENCES users (user_id) NOT NULL,
-    ads_id BIGINT REFERENCES ads (ads_id) NOT NULL,
+    user_id BIGINT FOREIGN KEY REFERENCES users (user_id) NOT NULL,
+    ads_id BIGINT FOREIGN KEY REFERENCES ads (ads_id) NOT NULL,
     ads_comment_created_time TIMESTAMP NOT NULL,
     ads_comment_text TEXT NOT NULL
     );
-
--- changeset AUV:2
-ALTER TABLE ads ADD CONSTRAINT user_id FOREIGN KEY REFERENCES users (user_id) NOT NULL;
-ALTER TABLE ads ADD CONSTRAINT ads_comment_id FOREIGN KEY REFERENCES ads_comments (ads_comment_id) NOT NULL;
-ALTER TABLE ads_comments ADD CONSTRAINT user_id FOREIGN KEY REFERENCES users (user_id) NOT NULL;
-ALTER TABLE ads_comments ADD CONSTRAINT ads_id FOREIGN KEY REFERENCES ads (ads_id) NOT NULL;
