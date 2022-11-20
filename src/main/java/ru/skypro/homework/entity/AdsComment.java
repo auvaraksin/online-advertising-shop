@@ -35,7 +35,6 @@ public class AdsComment {
             nullable = false
     )
     private User author;
-
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(
             name = "ads_id",
