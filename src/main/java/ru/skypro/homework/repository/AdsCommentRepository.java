@@ -11,6 +11,6 @@ import java.util.List;
 @Repository
 public interface AdsCommentRepository extends JpaRepository<AdsComment, Integer> {
 
-    @Query("SELECT * FROM AdsComment INNER JOIN Ads ON ads_id = id")
+//    @Query("SELECT * FROM AdsComment INNER JOIN Ads ON ads_id = id")
     List<AdsComment> findAdsCommentByAdsId(Integer id);
 }

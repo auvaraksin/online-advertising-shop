@@ -12,13 +12,13 @@ import java.util.Objects;
 @ToString(exclude = {"password"})
 @RequiredArgsConstructor
 @Table(
-        name = "users",
-        uniqueConstraints = {
-                @UniqueConstraint(name = "user_email_unique",
-                        columnNames = "user_email"),
-                @UniqueConstraint(name = "user_phone_unique",
-                columnNames = "user_phone")
-        }
+        name = "users"
+//        uniqueConstraints = {
+//                @UniqueConstraint(name = "user_email_unique",
+//                        columnNames = "user_email"),
+//                @UniqueConstraint(name = "user_phone_unique",
+//                columnNames = "user_phone")
+//        }
 )
 public class User {
     @Id
