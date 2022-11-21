@@ -8,6 +8,8 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -29,6 +31,7 @@ import static ru.skypro.homework.dto.RoleDto.USER;
 public class AuthController {
 
     private final AuthService authService;
+    private static final Logger logger = LoggerFactory.getLogger(AuthController.class);
 
     @Operation(summary = "login", description = "", tags={ "Авторизация"})
     @ApiResponses(value = {
@@ -40,6 +43,7 @@ public class AuthController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody LoginReqDto req) {
+        logger.info("Method to check login data was invoked");
         if (authService.login(req.getUsername(), req.getPassword())) {
             return ResponseEntity.ok().build();
         } else {
@@ -57,6 +61,7 @@ public class AuthController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @PostMapping("/register")
     public ResponseEntity<?> register(@RequestBody RegReqDto req) {
+        logger.info("Method to create User " + req + " from RegReqDto was invoked");
         RoleDto role = req.getRole() == null ? USER : req.getRole();
         if (authService.register(req, role)) {
             return ResponseEntity.ok().build();

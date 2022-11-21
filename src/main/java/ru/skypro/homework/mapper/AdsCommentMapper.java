@@ -8,10 +8,10 @@ import ru.skypro.homework.entity.AdsComment;
 
 import java.util.List;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AdsCommentMapper {
 //    @Mapping(source = "author.id", target = "author")
-////    @Mapping(source = "pk.id", target = "id")
+//    @Mapping(source = "pk.id", target = "id")
 //    AdsCommentDto adsCommentToAdsCommentDto(AdsComment adsComment);
 //
 //    List<AdsCommentDto> adsCommentToAdsCommentDto(List<AdsComment> adsComment);

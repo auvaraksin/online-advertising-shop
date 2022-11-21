@@ -1,14 +1,16 @@
 package ru.skypro.homework.mapper;
 
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
 import ru.skypro.homework.dto.CreateUserDto;
+import ru.skypro.homework.dto.RegReqDto;
 import ru.skypro.homework.dto.UserDto;
 import ru.skypro.homework.entity.User;
 
 import java.util.List;
 
-@Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE)
+@Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface UserMapper {
 
     UserDto userToUserDto(User user);
@@ -29,4 +31,7 @@ public interface UserMapper {
 //    @Mapping(target = "adsList", ignore = true)
 //    @Mapping(target = "adsCommentList", ignore = true)
     User createUserDtoToUser(CreateUserDto createUserDto);
+
+    @Mapping(source = "username", target = "email")
+    User regReqDtoToUser(RegReqDto regReqDto);
 }

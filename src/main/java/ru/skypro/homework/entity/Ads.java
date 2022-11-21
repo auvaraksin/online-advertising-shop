@@ -37,8 +37,6 @@ public class Ads {
             name = "user_id",
             nullable = false
     )
-    @ManyToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
     private User author;
 
     @OneToMany(mappedBy = "ads", cascade = CascadeType.ALL)

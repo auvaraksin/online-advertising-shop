@@ -11,15 +11,7 @@ import java.util.Objects;
 @Setter
 @ToString(exclude = {"password"})
 @RequiredArgsConstructor
-@Table(
-        name = "users"
-//        uniqueConstraints = {
-//                @UniqueConstraint(name = "user_email_unique",
-//                        columnNames = "user_email"),
-//                @UniqueConstraint(name = "user_phone_unique",
-//                columnNames = "user_phone")
-//        }
-)
+@Table(name = "users")
 public class User {
     @Id
     @SequenceGenerator(
