@@ -15,9 +15,7 @@ import java.util.Optional;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
-
     private final UserMapper userMapper;
-
     private static final Logger logger = LoggerFactory.getLogger(UserServiceImpl.class);
 
     public UserServiceImpl(UserRepository userRepository, UserMapper userMapper) {
@@ -32,8 +30,8 @@ public class UserServiceImpl implements UserService {
         logger.info("Method to create a new record " + user + " in the DB in table 'User' was invoked");
     }
 
-    public Optional<User> checkUserExists(String email) {
-        logger.info("Method to check if the record = {" + email + "} in the DB in table 'User' does exist was invoked");
+    public Optional<User> findUserByEmail(String email) {
+        logger.info("Method to find record with user data by = {" + email + "} in the DB in table 'User' was invoked");
         return userRepository.findUserByEmailIgnoreCase(email);
     }
 }

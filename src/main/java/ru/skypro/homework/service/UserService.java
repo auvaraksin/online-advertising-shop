@@ -8,5 +8,5 @@ import java.util.Optional;
 public interface UserService {
     void createUser(RegReqDto regReqDto);
 
-    Optional<User> checkUserExists(String email);
+    Optional<User> findUserByEmail(String email);
 }
