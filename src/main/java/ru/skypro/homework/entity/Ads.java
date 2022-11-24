@@ -27,7 +27,7 @@ public class Ads {
             generator = "ads_sequence"
     )
     @Column(
-            name = "ads_id",
+            name = "id",
             updatable = false
     )
     private Integer id;
@@ -41,31 +41,31 @@ public class Ads {
 
     @OneToMany(mappedBy = "ads", cascade = CascadeType.ALL)
     @Column(
-            name = "ads_comment_ids",
+            name = "ads_comment_id",
             nullable = true
     )
     List<AdsComment> adsCommentList;
 
     @Column(
-            name = "ads_image_url",
+            name = "image_url",
             nullable = false
     )
     private String image;
 
     @Column(
-            name = "ads_price",
+            name = "price",
             nullable = false
     )
     private Integer price;
 
     @Column(
-            name = "ads_title",
+            name = "title",
             nullable = false
     )
     private String title;
 
     @Column(
-            name = "ads_description"
+            name = "description"
     )
     private String description;
 

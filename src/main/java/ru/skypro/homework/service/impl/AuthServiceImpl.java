@@ -2,12 +2,9 @@ package ru.skypro.homework.service.impl;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dto.RegReqDto;
 import ru.skypro.homework.dto.RoleDto;
@@ -36,12 +33,12 @@ public class AuthServiceImpl implements AuthService {
             logger.info(userName + " does not exist");
             return false;
         }
+        logger.info("Method to authorise user was invoked");
         UserDetails userDetails = userDetailsService.loadUserByUsername(userName);
         String encryptedPassword = userDetails.getPassword();
-//        String encryptedPasswordWithoutEncryptionType = encryptedPassword.substring(8);
-//        System.out.println("Password validation status:" + encryptedPasswordWithoutEncryptionType.equals(password));
-//        return encoder.matches(password, encryptedPasswordWithoutEncryptionType);
-        return encoder.matches(password, encryptedPassword);
+        String encryptedPasswordWithoutEncryptionType = encryptedPassword.substring(8);
+        System.out.println("Password validation status:" + encryptedPasswordWithoutEncryptionType.equals(password));
+        return encoder.matches(password, encryptedPasswordWithoutEncryptionType);
     }
 
     @Override

@@ -24,42 +24,42 @@ public class User {
             generator = "user_sequence"
     )
     @Column(
-            name = "user_id",
+            name = "id",
             updatable = false
     )
     private Integer id;
 
     @Column(
-            name = "user_first_name",
+            name = "first_name",
             nullable = false
     )
     private String firstName;
 
     @Column(
-            name = "user_last_name",
+            name = "last_name",
             nullable = false
     )
     private String lastName;
 
     @Column(
-            name = "user_email",
+            name = "username",
             nullable = false
     )
     private String email;
 
     @Column(
-            name = "user_phone",
+            name = "phone",
             nullable = true)
     private String phone;
 
     @Column(
-            name = "user_password",
+            name = "password",
             nullable = false
     )
     private String password;
 
     @Column(
-            name = "user_role",
+            name = "role",
             nullable = false
     )
     @Enumerated(EnumType.STRING)
@@ -74,7 +74,7 @@ public class User {
 
     @OneToMany(mappedBy = "author", cascade = CascadeType.ALL)
     @Column(
-            name = "ads_comment_ids",
+            name = "ads_comment_id",
             nullable = true
     )
     List<AdsComment> adsCommentList;

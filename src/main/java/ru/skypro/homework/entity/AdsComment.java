@@ -24,7 +24,7 @@ public class AdsComment {
             generator = "ads_comment_sequence"
     )
     @Column(
-            name = "ads_comment_id",
+            name = "id",
             updatable = false
     )
     private Integer id;
@@ -43,13 +43,13 @@ public class AdsComment {
     private Ads ads;
 
     @Column(
-            name = "ads_comment_created_time",
+            name = "created_time",
             nullable = false
     )
     private LocalDateTime createdAt;
 
     @Column(
-            name = "ads_comment_text",
+            name = "text",
             nullable = false
     )
     private String text;
