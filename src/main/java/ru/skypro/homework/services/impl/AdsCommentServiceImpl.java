@@ -5,9 +5,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.mappers.AdsMapper;
 import ru.skypro.homework.repositories.AdsCommentRepository;
+import ru.skypro.homework.services.AdsCommentService;
 
 @Service
-public class AdsCommentServiceImpl {
+public class AdsCommentServiceImpl implements AdsCommentService {
 
     private final AdsCommentRepository adsCommentRepository;
 

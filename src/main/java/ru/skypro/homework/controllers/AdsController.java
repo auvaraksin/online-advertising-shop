@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,6 +24,7 @@ import ru.skypro.homework.dtos.CreateAdsDto;
 import ru.skypro.homework.dtos.FullAdsDto;
 import ru.skypro.homework.dtos.ResponseWrapperAdsCommentDto;
 import ru.skypro.homework.dtos.ResponseWrapperAdsDto;
+import ru.skypro.homework.services.AdsService;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -31,6 +33,9 @@ import ru.skypro.homework.dtos.ResponseWrapperAdsDto;
 @Tag(name = "Ads Rest Controller", description = "CRUD операции с объявлениями")
 public class AdsController {
 
+    private final AdsService adsService;
+
+    /* ---> D O N E <---*/
     @Operation(summary = "getAllAds", description = "Получить все объявления", tags={ "Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
@@ -41,9 +46,10 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @GetMapping()
     public ResponseEntity<ResponseWrapperAdsDto> getAllAds() {
-        return ResponseEntity.ok(new ResponseWrapperAdsDto());
+        return adsService.getAllAds();
     }
 
+    /* ---> D O N E <---*/
     @Operation(summary = "addAds",  description = "Добавить объявления", tags={ "Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created",
@@ -52,11 +58,13 @@ public class AdsController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
+    @PreAuthorize("isFullyAuthenticated()")
     @PostMapping
     public ResponseEntity<AdsDto> addAds(@RequestBody CreateAdsDto createAdsDto) {
-        return ResponseEntity.ok(new AdsDto());
+        return adsService.createAds(createAdsDto);
     }
 
+    /* ---> D O N E <---*/
     @Operation(summary = "getAdsMe", description = "Получить объявления", tags={ "Объявления"})///???
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",  content = @Content(mediaType = "*/*",
@@ -66,7 +74,7 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @GetMapping("/me")
     public ResponseEntity<ResponseWrapperAdsDto> getAdsMe() {
-        return ResponseEntity.ok(new ResponseWrapperAdsDto());
+        return adsService.getAdsMe();
     }
 
     @Operation(summary = "getAdsComments", description = "Получить все отзывы", tags={ "Отзывы"})

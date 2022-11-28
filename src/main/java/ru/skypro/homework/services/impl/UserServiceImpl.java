@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import ru.skypro.homework.dtos.RegReqDto;
+import ru.skypro.homework.dtos.RoleDto;
 import ru.skypro.homework.entities.User;
 import ru.skypro.homework.mappers.UserMapper;
 import ru.skypro.homework.repositories.UserRepository;
@@ -23,11 +24,16 @@ public class UserServiceImpl implements UserService {
         this.userMapper = userMapper;
     }
 
-    public void registerUser(RegReqDto regReqDto) {
-        User user = userMapper.regReqDtoToUser(regReqDto);
-        logger.info("ReqReqDto has been successfully mapped to User entity");
+    public void updateUser(RegReqDto regReqDto, RoleDto roleDto) {
+        regReqDto.setRole(roleDto);
+        User userMapped = userMapper.regReqDtoToUser(regReqDto);
+        User user = findUserByEmail(regReqDto.getUsername()).orElseThrow();
+        user.setFirstName(userMapped.getFirstName());
+        user.setLastName(userMapped.getLastName());
+        user.setPhone(userMapped.getPhone());
+        user.setRole(userMapped.getRole());
+        logger.info("Method to update User " + user + " in the DB in table 'User' was invoked");
         userRepository.save(user);
-        logger.info("Method to create a new record " + user + " in the DB in table 'User' was invoked");
     }
 
     public Optional<User> findUserByEmail(String email) {

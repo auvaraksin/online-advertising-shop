@@ -11,17 +11,21 @@ import org.springframework.stereotype.Service;
 import ru.skypro.homework.dtos.RegReqDto;
 import ru.skypro.homework.dtos.RoleDto;
 import ru.skypro.homework.services.AuthService;
+import ru.skypro.homework.services.UserService;
 
 @Service
 public class AuthServiceImpl implements AuthService {
 
     private final JdbcUserDetailsManager jdbcUserDetailsManager;
     private final PasswordEncoder encoder;
+
+    private final UserService userService;
     private static final Logger logger = LoggerFactory.getLogger(AuthServiceImpl.class);
 
-    public AuthServiceImpl(JdbcUserDetailsManager jdbcUserDetailsManager) {
+    public AuthServiceImpl(JdbcUserDetailsManager jdbcUserDetailsManager, UserService userService) {
         this.jdbcUserDetailsManager = jdbcUserDetailsManager;
         this.encoder = new BCryptPasswordEncoder();
+        this.userService = userService;
     }
 
     @Override
@@ -30,7 +34,7 @@ public class AuthServiceImpl implements AuthService {
             logger.info(userName + " does not exist");
             return false;
         }
-        logger.info("Method to authorise user was invoked");
+        logger.info("Method to authorise user (username = " + userName + ") was invoked");
         UserDetails userDetails = jdbcUserDetailsManager.loadUserByUsername(userName);
         String encryptedPassword = userDetails.getPassword();
         logger.info("Password validation status:" + encoder.matches(password, encryptedPassword));
@@ -39,20 +43,21 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean register(RegReqDto regReqDto, RoleDto roleDto) {
-        logger.info("Method to register a new User in the AuthService was invoked");
+        logger.info("Method to register a new User (username = " + regReqDto.getUsername() + ") was invoked");
         if (jdbcUserDetailsManager.userExists(regReqDto.getUsername())) {
             return false;
         }
         String encryptedPassword = encoder.encode(regReqDto.getPassword());
         regReqDto.setPassword(encryptedPassword);
-        logger.info("Password has been successfully encrypted");
+        logger.info("Password (username = " + regReqDto.getUsername() + ") has been successfully encrypted");
         regReqDto.setRole(roleDto);
         jdbcUserDetailsManager.createUser(User.withUsername(regReqDto.getUsername())
                 .username(regReqDto.getUsername())
                 .password(regReqDto.getPassword())
                 .roles(String.valueOf(regReqDto.getRole()))
                 .build());
-        logger.info("New user has been successfully created");
+        userService.updateUser(regReqDto, roleDto);
+        logger.info("New user (username = " + regReqDto.getUsername() + ") has been successfully created");
         return true;
     }
 }

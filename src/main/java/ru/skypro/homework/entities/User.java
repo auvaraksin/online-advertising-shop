@@ -9,7 +9,6 @@ import java.util.List;
 @Getter
 @Setter
 @EqualsAndHashCode
-@ToString(exclude = {"password"})
 @NoArgsConstructor
 @Table(name = "users")
 public class User {

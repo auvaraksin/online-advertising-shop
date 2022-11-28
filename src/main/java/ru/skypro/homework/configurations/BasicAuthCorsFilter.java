@@ -1,4 +1,4 @@
-package ru.skypro.homework.controllers;
+package ru.skypro.homework.configurations;
 
 
 import org.springframework.stereotype.Component;
