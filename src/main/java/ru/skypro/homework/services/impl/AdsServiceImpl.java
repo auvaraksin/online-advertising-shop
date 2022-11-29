@@ -20,6 +20,7 @@ import ru.skypro.homework.services.UserService;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -84,5 +85,10 @@ public class AdsServiceImpl implements AdsService {
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    public Optional<Ads> findAdsById(Integer adsId) {
+        logger.info("Method to find all ads by its ID in the DB in table 'Ads' was invoked");
+        return adsRepository.findById(adsId);
     }
 }

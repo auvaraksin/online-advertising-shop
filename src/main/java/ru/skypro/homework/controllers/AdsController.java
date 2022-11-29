@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
+import org.springframework.core.SpringVersion;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -24,6 +25,7 @@ import ru.skypro.homework.dtos.CreateAdsDto;
 import ru.skypro.homework.dtos.FullAdsDto;
 import ru.skypro.homework.dtos.ResponseWrapperAdsCommentDto;
 import ru.skypro.homework.dtos.ResponseWrapperAdsDto;
+import ru.skypro.homework.services.AdsCommentService;
 import ru.skypro.homework.services.AdsService;
 
 @CrossOrigin(value = "http://localhost:3000")
@@ -34,6 +36,7 @@ import ru.skypro.homework.services.AdsService;
 public class AdsController {
 
     private final AdsService adsService;
+    private final AdsCommentService adsCommentService;
 
     /* ---> D O N E <---*/
     @Operation(summary = "getAllAds", description = "Получить все объявления", tags={ "Объявления"})
@@ -77,6 +80,7 @@ public class AdsController {
         return adsService.getAdsMe();
     }
 
+    /* ---> D O N E <---*/
     @Operation(summary = "getAdsComments", description = "Получить все отзывы", tags={ "Отзывы"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
@@ -86,7 +90,7 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @GetMapping("/{ad_pk}/comments")
     public ResponseEntity<ResponseWrapperAdsCommentDto> getAdsComments(@PathVariable(name = "ad_pk") Integer adsId) {
-        return ResponseEntity.ok(new ResponseWrapperAdsCommentDto());
+        return adsCommentService.getAdsComments(adsId);
     }
     @Operation(summary = "addAdsComments", description = "Сохранить отзыв", tags={ "Отзывы"})
     @ApiResponses(value = {
