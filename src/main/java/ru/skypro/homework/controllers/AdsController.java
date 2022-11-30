@@ -92,6 +92,8 @@ public class AdsController {
     public ResponseEntity<ResponseWrapperAdsCommentDto> getAdsComments(@PathVariable(name = "ad_pk") Integer adsId) {
         return adsCommentService.getAdsComments(adsId);
     }
+
+    /* ---> D O N E <---*/
     @Operation(summary = "addAdsComments", description = "Сохранить отзыв", tags={ "Отзывы"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = "*/*",
@@ -101,10 +103,11 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @PostMapping("/{ad_pk}/comments")
     public ResponseEntity<AdsCommentDto> addAdsComments(@PathVariable(name = "ad_pk") Integer adsId,
-                                                        @RequestBody AdsCommentDto dto) {
-        return ResponseEntity.ok(new AdsCommentDto());
+                                                        @RequestBody AdsCommentDto adsCommentDto) {
+        return adsCommentService.addAdsComments(adsId, adsCommentDto);
     }
 
+    /* ---> D O N E <---*/
     @Operation(summary = "deleteAdsComment", description = "Удалить отзыв", tags={ "Отзывы"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content", content = @Content(mediaType = "")),
@@ -114,8 +117,10 @@ public class AdsController {
     @DeleteMapping("/{ad_pk}/comments/{id}")
     public ResponseEntity<?> deleteAdsComment(@PathVariable(name = "ad_pk") Integer adsId,
                                               @PathVariable(name = "id") Integer id) {
-        return ResponseEntity.ok().build();
+        return adsCommentService.deleteAdsComment(adsId, id);
     }
+
+    /* ---> D O N E <---*/
     @Operation(summary = "getAdsComment", description = "Получить отзыв", tags={ "Отзывы"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
@@ -126,8 +131,10 @@ public class AdsController {
     @GetMapping("/{ad_pk}/comments/{id}")
     public ResponseEntity<AdsCommentDto> getAdsComment(@PathVariable(name = "ad_pk") Integer adsId,
                                                        @PathVariable(name = "id") Integer id) {
-        return ResponseEntity.ok(new AdsCommentDto());
+        return adsCommentService.getAdsComment(adsId, id);
     }
+
+    /* ---> D O N E <---*/
     @Operation(summary = "updateAdsComment", description = "Обновыть отзыв", tags={ "Отзывы"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
@@ -137,19 +144,21 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = ""))})
     @PatchMapping("/{ad_pk}/comments/{id}")
     public ResponseEntity<AdsCommentDto> updateAdsComment(@PathVariable(name = "ad_pk") Integer adsId,
-                                                          @PathVariable(name = "id") Integer id, @RequestBody AdsCommentDto dto) {
-        return ResponseEntity.ok(new AdsCommentDto());
+                                                          @PathVariable(name = "id") Integer id,
+                                                          @RequestBody AdsCommentDto adsCommentDto) {
+        return adsCommentService.updateAdsComment(adsId, id, adsCommentDto);
     }
 
+    /* ---> D O N E <---*/
     @Operation(summary = "removeAds",description = "Удалить объявление", tags={ "Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = ""))})
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> removeAds(@PathVariable Integer id) {
-        return ResponseEntity.ok().build();
-    }
+    public ResponseEntity<?> removeAds(@PathVariable Integer id) {return adsService.removeAds(id);}
+
+    /* ---> D O N E <---*/
     @Operation(summary = "getAds", description = "Получить полную информацию по объявлению", tags={ "Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
@@ -158,10 +167,11 @@ public class AdsController {
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @GetMapping("/{id}")
-    public ResponseEntity<FullAdsDto> getAds(@PathVariable Integer id) {
-        return ResponseEntity.ok(new FullAdsDto());
+    public ResponseEntity<FullAdsDto> getAds(@PathVariable(name = "id") Integer adsId) {
+        return adsService.getAds(adsId);
     }
 
+    /* ---> D O N E <---*/
     @Operation(summary = "updateAds", description = "Обновить объявление", tags={ "Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
@@ -170,8 +180,7 @@ public class AdsController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = ""))})
     @PatchMapping("/{id}")
-    public ResponseEntity<AdsDto> updateAds(@PathVariable Integer id, @RequestBody AdsDto dto) {
-        return ResponseEntity.ok(new AdsDto());
+    public ResponseEntity<AdsDto> updateAds(@PathVariable(name = "id") Integer id, @RequestBody AdsDto adsDto) {
+        return adsService.updateAds(id, adsDto);
     }
 }
-

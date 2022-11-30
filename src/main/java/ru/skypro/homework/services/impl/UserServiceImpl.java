@@ -40,4 +40,10 @@ public class UserServiceImpl implements UserService {
         logger.info("Method to find record with user data by = {" + email + "} in the DB in table 'User' was invoked");
         return userRepository.findUserByEmailIgnoreCase(email);
     }
+
+    public Optional<User> findUserById(Integer id) {
+        logger.info("Method to find record with user data by ID = {" + id + "} in the DB in table 'User' was invoked");
+        return userRepository.findUserById(id);
+    }
+
 }

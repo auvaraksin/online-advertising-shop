@@ -10,6 +10,7 @@ import java.util.Optional;
 public interface AdsRepository extends JpaRepository<Ads, Integer> {
 
     Optional<Ads> findById(Integer id);
+
 //    List<Ads> findByTitle(String title);
 
 //    List<Ads> findAdsByAuthorOrderById(User author);

@@ -9,4 +9,5 @@ import java.util.Optional;
 public interface UserService {
     void updateUser(RegReqDto regReqDto, RoleDto roleDto);
     Optional<User> findUserByEmail(String email);
+    Optional<User> findUserById(Integer id);
 }

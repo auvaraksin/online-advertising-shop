@@ -10,16 +10,14 @@ import java.util.List;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AdsCommentMapper {
-    @Mapping(source = "id", target = "pk")
     @Mapping(source = "author.id", target = "author")
+    @Mapping(source = "ads.id", target = "pk")
     AdsCommentDto adsCommentToAdsCommentDto(AdsComment adsComment);
 
     List<AdsCommentDto> adsCommentToAdsCommentDto(List<AdsComment> adsComment);
 
-    @Mapping(source = "pk", target = "id")
     @Mapping(source = "author", target = "author.id")
-//    @Mapping(target = "id", ignore = true)
-//    @Mapping(target = "createdAt", ignore = true)
+    @Mapping(source = "pk", target = "ads.id")
     AdsComment adsCommentDtoToAdsComment(AdsCommentDto adsCommentDto);
 
     List<AdsComment> adsCommentDtoToAdsComment(List<AdsCommentDto> adsCommentDto);
