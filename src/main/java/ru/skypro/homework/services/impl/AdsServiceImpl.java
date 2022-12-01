@@ -48,7 +48,9 @@ public class AdsServiceImpl implements AdsService {
     public ResponseEntity<AdsDto> createAds(CreateAdsDto createAdsDto) {
         logger.info("Method to create a new ads in the DB in table 'Ads' was invoked");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        if (createAdsDto != null) {
+        if (createAdsDto.getDescription() != null
+                && createAdsDto.getPrice() != null
+                && createAdsDto.getTitle() != null) {
             Ads ads = adsMapper.createAdsDtoToAds(createAdsDto);
             User user = userService.findUserByEmail(auth.getName()).orElseThrow();
             ads.setAuthor(user);
@@ -59,7 +61,7 @@ public class AdsServiceImpl implements AdsService {
             AdsDto adsDto = adsMapper.adsToAdsDto(ads);
             return ResponseEntity.ok(adsDto);
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.badRequest().build();
     }
 
     public ResponseEntity<ResponseWrapperAdsDto> getAdsMe() {
@@ -78,7 +80,7 @@ public class AdsServiceImpl implements AdsService {
             logger.info("All user's ads were successfully found");
             return ResponseEntity.ok(responseWrapperAdsDto);
         } else {
-            return ResponseEntity.notFound().build();
+            return ResponseEntity.ok().build();
         }
     }
 
