@@ -38,8 +38,7 @@ public class AdsController {
     private final AdsService adsService;
     private final AdsCommentService adsCommentService;
 
-    /* ---> D O N E <---*/
-    @Operation(summary = "getAllAds", description = "Получить все объявления", tags={ "Объявления"})
+    @Operation(summary = "getAllAds", description = "Получить все объявления", tags = {"Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK",
                     content = @Content(mediaType = "*/*",
@@ -52,8 +51,7 @@ public class AdsController {
         return adsService.getAllAds();
     }
 
-    /* ---> D O N E <---*/
-    @Operation(summary = "addAds",  description = "Добавить объявления", tags={ "Объявления"})
+    @Operation(summary = "addAds", description = "Добавить объявления", tags = {"Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created",
                     content = @Content(mediaType = "*/*",
@@ -67,81 +65,83 @@ public class AdsController {
         return adsService.createAds(createAdsDto);
     }
 
-    /* ---> D O N E <---*/
-    @Operation(summary = "getAdsMe", description = "Получить объявления", tags={ "Объявления"})///???
+    @Operation(summary = "getAdsMe", description = "Получить объявления", tags = {"Объявления"})///???
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "OK",  content = @Content(mediaType = "*/*",
+            @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
                     schema = @Schema(implementation = ResponseWrapperAdsDto.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
+    @PreAuthorize("isFullyAuthenticated()")
     @GetMapping("/me")
     public ResponseEntity<ResponseWrapperAdsDto> getAdsMe() {
         return adsService.getAdsMe();
     }
 
-    /* ---> D O N E <---*/
-    @Operation(summary = "getAdsComments", description = "Получить все отзывы", tags={ "Отзывы"})
+    @Operation(summary = "getAdsComments", description = "Получить все отзывы", tags = {"Отзывы"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
                     schema = @Schema(implementation = ResponseWrapperAdsCommentDto.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
+    @PreAuthorize("isFullyAuthenticated()")
     @GetMapping("/{ad_pk}/comments")
     public ResponseEntity<ResponseWrapperAdsCommentDto> getAdsComments(@PathVariable(name = "ad_pk") Integer adsId) {
         return adsCommentService.getAdsComments(adsId);
     }
 
-    /* ---> D O N E <---*/
-    @Operation(summary = "addAdsComments", description = "Сохранить отзыв", tags={ "Отзывы"})
+    @Operation(summary = "addAdsComments", description = "Сохранить отзыв", tags = {"Отзывы"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Created", content = @Content(mediaType = "*/*",
                     schema = @Schema(implementation = AdsCommentDto.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
+    @PreAuthorize("isFullyAuthenticated()")
     @PostMapping("/{ad_pk}/comments")
     public ResponseEntity<AdsCommentDto> addAdsComments(@PathVariable(name = "ad_pk") Integer adsId,
                                                         @RequestBody AdsCommentDto adsCommentDto) {
         return adsCommentService.addAdsComments(adsId, adsCommentDto);
     }
 
-    /* ---> D O N E <---*/
-    @Operation(summary = "deleteAdsComment", description = "Удалить отзыв", tags={ "Отзывы"})
+    @Operation(summary = "deleteAdsComment", description = "Удалить отзыв", tags = {"Отзывы"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
+    @PreAuthorize("@userServiceImpl.getUser(@adsCommentServiceImpl.getAdsComment(#adsId, #id).body.author).body.email" +
+            ".equals(authentication.principal.username) or hasAuthority('ADMIN')")
     @DeleteMapping("/{ad_pk}/comments/{id}")
     public ResponseEntity<?> deleteAdsComment(@PathVariable(name = "ad_pk") Integer adsId,
                                               @PathVariable(name = "id") Integer id) {
         return adsCommentService.deleteAdsComment(adsId, id);
     }
 
-    /* ---> D O N E <---*/
-    @Operation(summary = "getAdsComment", description = "Получить отзыв", tags={ "Отзывы"})
+    @Operation(summary = "getAdsComment", description = "Получить отзыв", tags = {"Отзывы"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
                     schema = @Schema(implementation = AdsCommentDto.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
+    @PreAuthorize("isFullyAuthenticated()")
     @GetMapping("/{ad_pk}/comments/{id}")
     public ResponseEntity<AdsCommentDto> getAdsComment(@PathVariable(name = "ad_pk") Integer adsId,
                                                        @PathVariable(name = "id") Integer id) {
         return adsCommentService.getAdsComment(adsId, id);
     }
 
-    /* ---> D O N E <---*/
-    @Operation(summary = "updateAdsComment", description = "Обновыть отзыв", tags={ "Отзывы"})
+    @Operation(summary = "updateAdsComment", description = "Обновыть отзыв", tags = {"Отзывы"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
                     schema = @Schema(implementation = AdsCommentDto.class))),
             @ApiResponse(responseCode = "204", description = "No Content", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = ""))})
+    @PreAuthorize("@userServiceImpl.getUser(@adsCommentServiceImpl.getAdsComment(#adsId, #id).body.author).body.email" +
+            ".equals(authentication.principal.username) or hasAuthority('ADMIN')")
     @PatchMapping("/{ad_pk}/comments/{id}")
     public ResponseEntity<AdsCommentDto> updateAdsComment(@PathVariable(name = "ad_pk") Integer adsId,
                                                           @PathVariable(name = "id") Integer id,
@@ -149,36 +149,40 @@ public class AdsController {
         return adsCommentService.updateAdsComment(adsId, id, adsCommentDto);
     }
 
-    /* ---> D O N E <---*/
-    @Operation(summary = "removeAds",description = "Удалить объявление", tags={ "Объявления"})
+    @Operation(summary = "removeAds", description = "Удалить объявление", tags = {"Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "204", description = "No Content", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = ""))})
+    @PreAuthorize("@userServiceImpl.getUser(@adsCommentServiceImpl.getAdsComment(#adsId, #id).body.author).body.email" +
+            ".equals(authentication.principal.username) or hasAuthority('ADMIN')")
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> removeAds(@PathVariable Integer id) {return adsService.removeAds(id);}
+    public ResponseEntity<?> removeAds(@PathVariable Integer id) {
+        return adsService.removeAds(id);
+    }
 
-    /* ---> D O N E <---*/
-    @Operation(summary = "getAds", description = "Получить полную информацию по объявлению", tags={ "Объявления"})
+    @Operation(summary = "getAds", description = "Получить полную информацию по объявлению", tags = {"Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
                     schema = @Schema(implementation = FullAdsDto.class))),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
+    @PreAuthorize("isFullyAuthenticated()")
     @GetMapping("/{id}")
     public ResponseEntity<FullAdsDto> getAds(@PathVariable(name = "id") Integer adsId) {
         return adsService.getAds(adsId);
     }
 
-    /* ---> D O N E <---*/
-    @Operation(summary = "updateAds", description = "Обновить объявление", tags={ "Объявления"})
+    @Operation(summary = "updateAds", description = "Обновить объявление", tags = {"Объявления"})
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*",
                     schema = @Schema(implementation = AdsDto.class))),
             @ApiResponse(responseCode = "204", description = "No Content", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = ""))})
+    @PreAuthorize("@userServiceImpl.getUser(@adsCommentServiceImpl.getAdsComment(#adsId, #id).body.author).body.email" +
+            ".equals(authentication.principal.username) or hasAuthority('ADMIN')")
     @PatchMapping("/{id}")
     public ResponseEntity<AdsDto> updateAds(@PathVariable(name = "id") Integer id, @RequestBody AdsDto adsDto) {
         return adsService.updateAds(id, adsDto);

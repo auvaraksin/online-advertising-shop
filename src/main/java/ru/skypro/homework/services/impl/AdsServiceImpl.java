@@ -36,7 +36,7 @@ public class AdsServiceImpl implements AdsService {
     }
 
     public ResponseEntity<ResponseWrapperAdsDto> getAllAds() {
-        logger.info("Method to find all ads in the DB in table 'Ads' was invoked");
+        logger.info("Method to find all ads in the DB in table 'ads' was invoked");
         List<Ads> adsList = adsRepository.findAll();
         ResponseWrapperAdsDto responseWrapperAdsDto = new ResponseWrapperAdsDto();
         List<AdsDto> adsDtoList = adsMapper.adsListToAdsDtoList(adsList);
@@ -46,7 +46,7 @@ public class AdsServiceImpl implements AdsService {
     }
 
     public ResponseEntity<AdsDto> createAds(CreateAdsDto createAdsDto) {
-        logger.info("Method to create a new ads in the DB in table 'Ads' was invoked");
+        logger.info("Method to create a new ads in the DB in table 'ads' was invoked");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (createAdsDto.getDescription() != null
                 && createAdsDto.getPrice() != null
@@ -57,7 +57,7 @@ public class AdsServiceImpl implements AdsService {
             //  TODO: Create method to add image into db
             ads.setImage("TODO: Create method to add image into db");
             adsRepository.save(ads);
-            logger.info("Ads ID = " + ads.getId() + " has been successfully created and recorded into DB in the table 'Ads'");
+            logger.info("Ads ID = " + ads.getId() + " has been successfully created and recorded into DB in the table 'ads'");
             AdsDto adsDto = adsMapper.adsToAdsDto(ads);
             return ResponseEntity.ok(adsDto);
         }
@@ -65,7 +65,7 @@ public class AdsServiceImpl implements AdsService {
     }
 
     public ResponseEntity<ResponseWrapperAdsDto> getAdsMe() {
-        logger.info("Method to find all user's ads in the DB in table 'Ads' was invoked");
+        logger.info("Method to find all user's ads in the DB in table 'ads' was invoked");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         User user = userService.findUserByEmail(auth.getName()).orElseThrow();
         List<Ads> adsList = adsRepository.findAll()
@@ -85,7 +85,7 @@ public class AdsServiceImpl implements AdsService {
     }
 
     public Optional<Ads> findAdsById(Integer adsId) {
-        logger.info("Method to find all ads by its ID in the DB in table 'Ads' was invoked");
+        logger.info("Method to find all ads by its ID in the DB in table 'ads' was invoked");
         return adsRepository.findById(adsId);
     }
 
@@ -111,7 +111,12 @@ public class AdsServiceImpl implements AdsService {
 
     public ResponseEntity<AdsDto> updateAds(Integer adsId, AdsDto adsDto) {
         logger.info("Method to update ads by its ID in the DB was invoked");
-        if (adsRepository.findById(adsId).isPresent()) {
+        if (adsRepository.findById(adsId).isPresent()
+                && adsDto.getPk() != null
+                && adsDto.getAuthor() != null
+                && adsDto.getImage() != null
+                && adsDto.getPrice() != null
+                && adsDto.getTitle() != null) {
             Ads ads = adsMapper.adsDtoToAds(adsDto);
             ads.setDescription(adsRepository.findById(adsId).orElseThrow().getDescription());
             adsRepository.save(ads);

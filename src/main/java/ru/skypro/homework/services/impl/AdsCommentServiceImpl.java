@@ -52,7 +52,7 @@ public class AdsCommentServiceImpl implements AdsCommentService {
                 return ResponseEntity.ok(responseWrapperAdsCommentDto);
             }
         }
-        return ResponseEntity.notFound().build();
+        return ResponseEntity.ok().build();
     }
 
     public ResponseEntity<AdsCommentDto> addAdsComments(Integer adsId,

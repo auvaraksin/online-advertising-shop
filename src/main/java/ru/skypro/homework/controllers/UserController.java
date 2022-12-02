@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RestController;
 import ru.skypro.homework.dtos.NewPasswordDto;
 import ru.skypro.homework.dtos.ResponseWrapperUserDto;
 import ru.skypro.homework.dtos.UserDto;
+import ru.skypro.homework.services.UserService;
 
 import java.security.Principal;
 
@@ -28,6 +29,8 @@ import java.security.Principal;
 @RequiredArgsConstructor
 @Tag(name = "Users Rest Controller", description = "CRUD операции с пользователями")
 public class UserController {
+
+    private final UserService userService;
 
     @Operation(summary = "getUsers", description = "Получить пользователей", tags = {"Пользователи"})
 
@@ -40,7 +43,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @GetMapping("/me")
     public ResponseEntity<ResponseWrapperUserDto> getUsers() {
-        return ResponseEntity.ok(new ResponseWrapperUserDto());
+        return userService.getUsers();
     }
 
     @Operation(summary = "updateUser", description = "Обновить пользователя", tags = {"Пользователи",})
@@ -51,8 +54,8 @@ public class UserController {
             @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content(mediaType = "")),
             @ApiResponse(responseCode = "403", description = "Forbidden", content = @Content(mediaType = ""))})
     @PatchMapping("/me")
-    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto dto) {
-        return ResponseEntity.ok(new UserDto());
+    public ResponseEntity<UserDto> updateUser(@RequestBody UserDto userDto) {
+        return userService.updateUser(userDto);
     }
 
     @Operation(summary = "setPassword", description = "Установить пароль", tags = {"Пользователи"})
@@ -64,7 +67,7 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @PostMapping("/set_password")
     public ResponseEntity<NewPasswordDto> setPassword(@RequestBody NewPasswordDto newPasswordDto, Principal principal) {
-        return ResponseEntity.ok(new NewPasswordDto());
+        return userService.setPassword(newPasswordDto, principal);
     }
 
     @Operation(summary = "getUser", description = "Получить пользователя по id", tags = {"Пользователи"})
@@ -77,6 +80,6 @@ public class UserController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @GetMapping("/{id}")
     public ResponseEntity<UserDto> getUser(@PathVariable Integer id) {
-        return ResponseEntity.ok(new UserDto());
+        return userService.getUser(id);
     }
 }
