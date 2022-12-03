@@ -10,15 +10,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.SpringVersion;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dtos.AdsCommentDto;
 import ru.skypro.homework.dtos.AdsDto;
 import ru.skypro.homework.dtos.CreateAdsDto;
@@ -27,6 +21,8 @@ import ru.skypro.homework.dtos.ResponseWrapperAdsCommentDto;
 import ru.skypro.homework.dtos.ResponseWrapperAdsDto;
 import ru.skypro.homework.services.AdsCommentService;
 import ru.skypro.homework.services.AdsService;
+
+import java.util.List;
 
 @CrossOrigin(value = "http://localhost:3000")
 @RestController
@@ -61,8 +57,9 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @PreAuthorize("isFullyAuthenticated()")
     @PostMapping
-    public ResponseEntity<AdsDto> addAds(@RequestBody CreateAdsDto createAdsDto) {
-        return adsService.createAds(createAdsDto);
+    public ResponseEntity<AdsDto> addAds(@RequestBody CreateAdsDto createAdsDto,
+                                         @RequestPart("image") List<MultipartFile> multipartFileList) {
+        return adsService.createAds(createAdsDto, multipartFileList);
     }
 
     @Operation(summary = "getAdsMe", description = "Получить объявления", tags = {"Объявления"})///???

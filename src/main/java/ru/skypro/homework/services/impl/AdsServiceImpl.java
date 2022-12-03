@@ -6,14 +6,18 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import ru.skypro.homework.dtos.*;
 import ru.skypro.homework.entities.Ads;
+import ru.skypro.homework.entities.Image;
 import ru.skypro.homework.entities.User;
 import ru.skypro.homework.mappers.AdsMapper;
 import ru.skypro.homework.repositories.AdsRepository;
 import ru.skypro.homework.services.AdsService;
+import ru.skypro.homework.services.ImageService;
 import ru.skypro.homework.services.UserService;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,15 +27,19 @@ public class AdsServiceImpl implements AdsService {
 
     private final AdsRepository adsRepository;
     private final UserService userService;
+
+    private final ImageService imageService;
     private final AdsMapper adsMapper;
 
     private static final Logger logger = LoggerFactory.getLogger(AdsServiceImpl.class);
 
     public AdsServiceImpl(AdsRepository adsRepository,
                           UserService userService,
+                          ImageService imageService,
                           AdsMapper adsMapper) {
         this.adsRepository = adsRepository;
         this.userService = userService;
+        this.imageService = imageService;
         this.adsMapper = adsMapper;
     }
 
@@ -45,17 +53,25 @@ public class AdsServiceImpl implements AdsService {
         return ResponseEntity.ok(responseWrapperAdsDto);
     }
 
-    public ResponseEntity<AdsDto> createAds(CreateAdsDto createAdsDto) {
+    public ResponseEntity<AdsDto> createAds(CreateAdsDto createAdsDto,
+                                            List<MultipartFile> multipartFileList) {
         logger.info("Method to create a new ads in the DB in table 'ads' was invoked");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (createAdsDto.getDescription() != null
                 && createAdsDto.getPrice() != null
-                && createAdsDto.getTitle() != null) {
+                && createAdsDto.getTitle() != null
+                && multipartFileList != null) {
             Ads ads = adsMapper.createAdsDtoToAds(createAdsDto);
             User user = userService.findUserByEmail(auth.getName()).orElseThrow();
+            List<Image> images = new ArrayList<>();
+            for (MultipartFile file : multipartFileList) {
+                Image image = imageService.saveImage(ads, file);
+                images.add(image);
+            }
             ads.setAuthor(user);
-            //  TODO: Create method to add image into db
-            ads.setImage("TODO: Create method to add image into db");
+            ads.setImages(images);
+            System.out.println(String.format("/images/%s", images.get(0).getId().toString()));
+            ads.setImage(String.format("/images/%s", images.get(0).getId().toString()));
             adsRepository.save(ads);
             logger.info("Ads ID = " + ads.getId() + " has been successfully created and recorded into DB in the table 'ads'");
             AdsDto adsDto = adsMapper.adsToAdsDto(ads);

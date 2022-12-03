@@ -1,8 +1,6 @@
 package ru.skypro.homework.mappers;
 
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.ReportingPolicy;
+import org.mapstruct.*;
 import ru.skypro.homework.dtos.AdsDto;
 import ru.skypro.homework.dtos.CreateAdsDto;
 import ru.skypro.homework.dtos.FullAdsDto;

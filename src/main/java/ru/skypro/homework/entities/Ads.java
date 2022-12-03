@@ -24,6 +24,10 @@ public class Ads {
     @Column(name = "ads_comment_id")
     List<AdsComment> adsCommentList;
 
+    @OneToMany(mappedBy = "ads", cascade = CascadeType.ALL)
+    @Column(name = "imege_id")
+    List<Image> images;
+
     private String image;
     private Integer price;
     private String title;

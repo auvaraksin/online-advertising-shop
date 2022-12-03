@@ -40,3 +40,13 @@ CREATE TABLE authorities(
 
 ALTER TABLE authorities
     ADD FOREIGN KEY (id) REFERENCES users (id);
+
+-- changeset AUV:2
+CREATE TABLE IF NOT EXISTS images(
+    id SERIAL PRIMARY KEY,
+    filepath TEXT NOT NULL,
+    file_size BIGINT NOT NULL,
+    mediatype VARCHAR(255) NOT NULL,
+    preview OID NOT NULL,
+    ads_id BIGINT REFERENCES ads(id) NOT NULL
+    );
