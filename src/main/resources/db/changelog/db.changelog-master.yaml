@@ -1,3 +1,0 @@
-databaseChangeLog:
-  - include:
-      file: db/scripts/online-advertising-shop.sql
