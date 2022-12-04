@@ -12,7 +12,8 @@ import java.util.Optional;
 public interface AdsService {
     ResponseEntity<ResponseWrapperAdsDto> getAllAds();
 
-    ResponseEntity<AdsDto> createAds(CreateAdsDto createAdsDto, List<MultipartFile> multipartFileList);
+    ResponseEntity<AdsDto> createAds(CreateAdsDto createAdsDto);
+//            , List<MultipartFile> multipartFileList);
 
     ResponseEntity<ResponseWrapperAdsDto> getAdsMe();
 

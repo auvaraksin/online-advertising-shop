@@ -35,8 +35,11 @@ public class ImageServiceImpl implements ImageService {
 
     public Image saveImage(Ads ads, MultipartFile file) {
         logger.info("Method to create a new image in the DB in table 'images' was invoked");
-        if (ads.getId() != null
-                && !file.isEmpty()) {
+        logger.info("Ads ID = " + ads.getId()
+                + ", Ads author email = " + ads.getAuthor().getEmail()
+                + ", Ads image = " + ads.getImage());
+        logger.info("File name = " + file.getOriginalFilename() + ", file type = " + file.getContentType());
+        if (!file.isEmpty()) {
         Image image = new Image();
         image.setAds(ads);
         image.setFileSize(file.getSize());
@@ -47,7 +50,8 @@ public class ImageServiceImpl implements ImageService {
             logger.info("File is missed");
             e.printStackTrace();
         }
-        image.setFilePath(String.format("/images/%s", image.getId()));
+        imageRepository.save(image);
+        image.setFilePath(String.format("/images/" + image.getId()));
         logger.info("Image was successfully saved. File path is " + image.getFilePath());
         return imageRepository.save(image);
         }

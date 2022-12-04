@@ -108,6 +108,7 @@ public class UserServiceImpl implements UserService {
             logger.info("User data by ID = " + id + " in the DB in table 'users' was successfully found");
             return ResponseEntity.ok(userDto);
         }
+        logger.info("User data by ID = " + id + " was not found");
         return ResponseEntity.notFound().build();
     }
 }

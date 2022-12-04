@@ -53,25 +53,27 @@ public class AdsServiceImpl implements AdsService {
         return ResponseEntity.ok(responseWrapperAdsDto);
     }
 
-    public ResponseEntity<AdsDto> createAds(CreateAdsDto createAdsDto,
-                                            List<MultipartFile> multipartFileList) {
+    public ResponseEntity<AdsDto> createAds(CreateAdsDto createAdsDto){
+//            ,
+//                                            List<MultipartFile> multipartFileList) {
         logger.info("Method to create a new ads in the DB in table 'ads' was invoked");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         if (createAdsDto.getDescription() != null
                 && createAdsDto.getPrice() != null
-                && createAdsDto.getTitle() != null
-                && multipartFileList != null) {
+                && createAdsDto.getTitle() != null) {
+//                && multipartFileList != null) {
             Ads ads = adsMapper.createAdsDtoToAds(createAdsDto);
+//            adsRepository.save(ads);
             User user = userService.findUserByEmail(auth.getName()).orElseThrow();
-            List<Image> images = new ArrayList<>();
-            for (MultipartFile file : multipartFileList) {
-                Image image = imageService.saveImage(ads, file);
-                images.add(image);
-            }
+//            List<Image> images = new ArrayList<>();
+//            for (MultipartFile file : multipartFileList) {
+//                Image image = imageService.saveImage(ads, file);
+//                images.add(image);
+//            }
             ads.setAuthor(user);
-            ads.setImages(images);
-            System.out.println(String.format("/images/%s", images.get(0).getId().toString()));
-            ads.setImage(String.format("/images/%s", images.get(0).getId().toString()));
+//            ads.setImages(images);
+//            System.out.println(String.format("/images/%s", images.get(0).getId().toString()));
+//            ads.setImage(String.format("/images/%s", images.get(0).getId().toString()));
             adsRepository.save(ads);
             logger.info("Ads ID = " + ads.getId() + " has been successfully created and recorded into DB in the table 'ads'");
             AdsDto adsDto = adsMapper.adsToAdsDto(ads);

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import lombok.RequiredArgsConstructor;
 import org.springframework.core.SpringVersion;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -57,9 +58,15 @@ public class AdsController {
             @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
     @PreAuthorize("isFullyAuthenticated()")
     @PostMapping
-    public ResponseEntity<AdsDto> addAds(@RequestBody CreateAdsDto createAdsDto,
-                                         @RequestPart("image") List<MultipartFile> multipartFileList) {
-        return adsService.createAds(createAdsDto, multipartFileList);
+//            (produces = MediaType.APPLICATION_JSON_VALUE,
+//            consumes = {MediaType.MULTIPART_FORM_DATA_VALUE,
+//                    MediaType.APPLICATION_JSON_VALUE})
+//    public ResponseEntity<AdsDto> addAds(@RequestPart("properties") CreateAdsDto createAdsDto) {
+        public ResponseEntity<AdsDto> addAds(@RequestBody CreateAdsDto createAdsDto) {
+//            ,
+//                                         @RequestPart("image") List<MultipartFile> multipartFileList) {
+        return adsService.createAds(createAdsDto);
+//                , multipartFileList);
     }
 
     @Operation(summary = "getAdsMe", description = "Получить объявления", tags = {"Объявления"})///???

@@ -44,7 +44,7 @@ ALTER TABLE authorities
 -- changeset AUV:2
 CREATE TABLE IF NOT EXISTS images(
     id SERIAL PRIMARY KEY,
-    filepath TEXT NOT NULL,
+    filepath TEXT,
     file_size BIGINT NOT NULL,
     mediatype VARCHAR(255) NOT NULL,
     preview OID NOT NULL,
