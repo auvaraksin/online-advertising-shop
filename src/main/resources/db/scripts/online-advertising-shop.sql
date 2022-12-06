@@ -1,42 +1,78 @@
 -- liquibase formatted sql
 
--- changeset AUV:1
+CREATE TABLE users
+(
+    id bigserial PRIMARY KEY,
+    first_name  text,
+    last_name   text,
+    phone       varchar(16),
+    username    text UNIQUE NOT NULL,
+    password    text NOT NULL,
+    enabled boolean NOT NULL DEFAULT true
+);
 
-CREATE TABLE IF NOT EXISTS users (
-    id SERIAL PRIMARY KEY,
-    first_name VARCHAR(255) NOT NULL,
-    last_name VARCHAR(255) NOT NULL,
-    username VARCHAR(255) UNIQUE NOT NULL,
-    phone VARCHAR(12) UNIQUE NOT NULL,
-    password VARCHAR(255) NOT NULL
+CREATE TABLE ads
+(
+    id              bigserial       PRIMARY KEY,
+    id_author       bigint          REFERENCES users (id),
+    title           text            NOT NULL,
+    description     text            NOT NULL,
+    price           decimal(17, 2)  NOT NULL CHECK (price > 0::decimal)
     );
 
-CREATE TABLE IF NOT EXISTS ads (
-    id SERIAL PRIMARY KEY,
-    user_id BIGINT REFERENCES users(id) NOT NULL,
-    ads_comment_id BIGINT NOT NULL,
-    image_url VARCHAR(255) NOT NULL,
-    price INTEGER NOT NULL,
-    title VARCHAR(255) NOT NULL,
-    description TEXT NOT NULL
-    );
+CREATE TABLE ads_images
+(
+    id              bigserial   PRIMARY KEY,
+    id_ads          bigint      REFERENCES ads (id),
+    image           bytea       NOT NULL
+);
 
-CREATE TABLE IF NOT EXISTS ads_comments(
-    id SERIAL PRIMARY KEY,
-    user_id BIGINT REFERENCES users(id) NOT NULL,
-    ads_id BIGINT REFERENCES ads(id) NOT NULL,
-    created_time TIMESTAMP NOT NULL,
-    text TEXT NOT NULL
-    );
+CREATE TABLE ads_comments
+(
+    id              bigserial    PRIMARY KEY,
+    id_author       bigint       REFERENCES users (id),
+    id_ads          bigint       REFERENCES ads (id),
+    comment_time    timestamp    NOT NULL,
+    comment_text    text         NOT NULL
+);
 
-ALTER TABLE ads
-    ADD FOREIGN KEY (ads_comment_id) REFERENCES ads_comments (id);
+CREATE TABLE authorities
+(
+    username    text            NOT NULL,
+    authority   varchar(16)     NOT NULL,
+    CONSTRAINT authorities_unique UNIQUE (username, authority)
+);
 
-CREATE TABLE authorities(
-    id SERIAL,
-    username  VARCHAR(255) NOT NULL,
-    authority VARCHAR(255) NOT NULL
-    );
+CREATE TABLE avatars
+(
+    id_user     bigint      PRIMARY KEY REFERENCES users (id) ON DELETE CASCADE,
+    image       bytea
+);
 
-ALTER TABLE authorities
-    ADD FOREIGN KEY (id) REFERENCES users (id);
+alter table ads_comments
+drop constraint ads_comments_id_ads_fkey;
+
+alter table ads_comments
+    add foreign key (id_ads) references ads
+        on delete cascade;
+
+alter table ads_comments
+drop constraint ads_comments_id_author_fkey;
+
+alter table ads_comments
+    add foreign key (id_author) references users
+        on delete cascade;
+
+alter table ads_images
+drop constraint ads_images_id_ads_fkey;
+
+alter table ads_images
+    add foreign key (id_ads) references ads
+        on delete cascade;
+
+alter table ads
+drop constraint ads_id_author_fkey;
+
+alter table ads
+    add foreign key (id_author) references users
+        on delete cascade;

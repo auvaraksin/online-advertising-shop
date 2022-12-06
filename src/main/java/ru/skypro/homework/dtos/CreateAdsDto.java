@@ -8,11 +8,11 @@ import javax.validation.constraints.Positive;
 
 @Data
 public class CreateAdsDto {
-    @NotNull
+    @NotNull(message = "description must be not null")
     private String description;
-    @NotNull
-    @Positive
+    @NotNull(message = "price must be not null")
+    @Positive(message = "price must be positive")
     private Integer price;
-    @NotBlank
+    @NotBlank(message = "title must be filled")
     private String title;
 }

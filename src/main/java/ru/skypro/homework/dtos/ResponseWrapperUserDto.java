@@ -8,5 +8,4 @@ import java.util.List;
 public class ResponseWrapperUserDto {
     private Integer count;
     private List<UserDto> results;
-
 }

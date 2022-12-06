@@ -3,28 +3,32 @@ package ru.skypro.homework.entities;
 import lombok.*;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
 
-@Entity(name = "AdsComment")
+@Entity
 @Getter
 @Setter
-@EqualsAndHashCode
 @NoArgsConstructor
 @Table(name = "ads_comments")
 public class AdsComment {
     @Id
+    @Column(columnDefinition = "bigserial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+    private Long id;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "user_id")
-    private User author;
+    private UserEntity author;
 
-    @ManyToOne(fetch = FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name = "ads_id")
     private Ads ads;
 
+    @Column(name = "comment_time")
     private LocalDateTime createdAt;
-    private String text;
 
+    @Column(name = "comment_text")
+    @NotNull
+    private String text;
 }

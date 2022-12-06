@@ -4,19 +4,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 import ru.skypro.homework.entities.Ads;
 import ru.skypro.homework.entities.AdsComment;
-import ru.skypro.homework.entities.User;
+import ru.skypro.homework.entities.UserEntity;
 
 import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface AdsCommentRepository extends JpaRepository<AdsComment, Integer> {
+public interface AdsCommentRepository extends JpaRepository<AdsComment, Long> {
 
-    List<AdsComment> findAdsCommentByAdsId(Integer adsId);
+    Optional<AdsComment> findFirstByIdAndAdsId(Long id, Long idAds);
 
-    AdsComment findAdsCommentById(Integer id);
+    List<AdsComment> findAllByAdsId(Long idAds);
 
-    AdsComment findAdsCommentByAdsIdAndId(Integer adsId, Integer id);
-
-    AdsComment findAdsCommentByAdsAndAuthor(Optional<Ads> ads, Optional<User> author);
 }
