@@ -13,7 +13,6 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class Image {
     @Id
-    @Column(columnDefinition = "bigserial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

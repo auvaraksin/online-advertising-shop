@@ -21,7 +21,6 @@ public class UserEntity {
     }
 
     @Id
-    @Column(columnDefinition = "bigserial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 

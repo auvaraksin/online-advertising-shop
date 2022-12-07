@@ -3,11 +3,9 @@ package ru.skypro.homework.controllers;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,13 +41,11 @@ import java.util.List;
 public class AdsController {
 
     private static final Logger logger = LoggerFactory.getLogger(AdsController.class);
-
     private final AdsService adsService;
     private final AdsCommentService adsCommentService;
     private final UserService userService;
     private final ImageService imageService;
     private final AuthService authService;
-
     private final AdsMapper adsMapper;
     private final AdsCommentMapper adsCommentMapper;
 

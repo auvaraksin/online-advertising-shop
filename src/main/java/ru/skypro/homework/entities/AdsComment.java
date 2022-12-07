@@ -13,16 +13,15 @@ import java.time.LocalDateTime;
 @Table(name = "ads_comments")
 public class AdsComment {
     @Id
-    @Column(columnDefinition = "bigserial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "author_id")
     private UserEntity author;
 
     @ManyToOne
-    @JoinColumn(name = "ads_id")
+    @JoinColumn(name = "id_ads")
     private Ads ads;
 
     @Column(name = "comment_time")

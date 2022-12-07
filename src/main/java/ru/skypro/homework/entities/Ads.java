@@ -5,6 +5,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Entity
@@ -14,7 +15,6 @@ import java.util.List;
 @Table(name = "ads")
 public class Ads {
     @Id
-    @Column(columnDefinition = "bigserial")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
@@ -23,7 +23,7 @@ public class Ads {
     private UserEntity author;
 
     @NotNull
-    private Integer price;
+    private BigDecimal price;
 
     @NotNull
     private String title;
@@ -34,8 +34,4 @@ public class Ads {
     @JsonIgnore
     @OneToMany(mappedBy = "ads", fetch = FetchType.EAGER)
     private List<Image> images;
-
-    public Image getLastImage() {
-        return ((images == null) || (images.size()) == 0) ? null : images.get(images.size() - 1);
-    }
 }

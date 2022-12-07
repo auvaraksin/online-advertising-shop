@@ -2,11 +2,8 @@ package ru.skypro.homework.mappers;
 
 import org.mapstruct.*;
 import ru.skypro.homework.dtos.AdsCommentDto;
-import ru.skypro.homework.dtos.CreateAdsDto;
 import ru.skypro.homework.dtos.ResponseWrapperAdsCommentDto;
-import ru.skypro.homework.entities.Ads;
 import ru.skypro.homework.entities.AdsComment;
-import ru.skypro.homework.entities.Image;
 
 import java.util.List;
 
