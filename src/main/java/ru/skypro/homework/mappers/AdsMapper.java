@@ -6,6 +6,7 @@ import ru.skypro.homework.dtos.CreateAdsDto;
 import ru.skypro.homework.dtos.FullAdsDto;
 import ru.skypro.homework.dtos.ResponseWrapperAdsDto;
 import ru.skypro.homework.entities.Ads;
+import ru.skypro.homework.entities.Image;
 
 import java.util.List;
 
@@ -14,7 +15,14 @@ public interface AdsMapper {
 
     @Mapping(target = "pk", source = "id")
     @Mapping(target = "author", source = "author.id")
+    @Mapping(target = "image", source = "ads", qualifiedByName = "getLastImageString")
     AdsDto adsToAdsDto(Ads ads);
+
+    @Named("getLastImageString")
+    default String getLastImageString(Ads ads) {
+        Image lastImage = ads.getLastImage();
+        return (lastImage == null) ? null : "/ads/image/" + lastImage.getId().toString();
+    }
 
     @Mapping(target = "id", source = "pk")
     @Mapping(target = "author.id", source = "author")
@@ -36,5 +44,6 @@ public interface AdsMapper {
     @Mapping(target = "authorLastName", source = "author.lastName")
     @Mapping(target = "email", source = "author.username")
     @Mapping(target = "phone", source = "author.phone")
+    @Mapping(target = "image", source = "ads", qualifiedByName = "getLastImageString")
     FullAdsDto adsToFullAdsDto(Ads ads);
 }

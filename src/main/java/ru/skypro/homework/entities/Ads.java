@@ -34,4 +34,8 @@ public class Ads {
     @JsonIgnore
     @OneToMany(mappedBy = "ads", fetch = FetchType.EAGER)
     private List<Image> images;
+
+    public Image getLastImage() {
+        return ((images == null) || (images.size()) == 0) ? null : images.get(images.size() - 1);
+    }
 }

@@ -150,7 +150,10 @@ class AdsControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.author").value(ADS_DTO.getAuthor()))
                 .andExpect(jsonPath("$.pk").value(ADS_DTO.getPk()))
-                .andExpect(jsonPath("$.price").value(ADS_DTO.getPrice()));
+                .andExpect(jsonPath("$.price").value(ADS_DTO.getPrice()))
+                .andExpect(jsonPath("$.image").value(ADS_DTO.getImage()))
+                .andExpect(jsonPath("$.title").value(ADS_DTO.getTitle()));
+
     }
 
     @Test
@@ -194,7 +197,9 @@ class AdsControllerTest {
                 .andExpect(jsonPath("$.count").value(adsList.size()))
                 .andExpect(jsonPath("$.results[0].author").value(ADS_DTO.getAuthor()))
                 .andExpect(jsonPath("$.results[0].pk").value(ADS_DTO.getPk()))
-                .andExpect(jsonPath("$.results[0].price").value(ADS_DTO.getPrice()));
+                .andExpect(jsonPath("$.results[0].price").value(ADS_DTO.getPrice()))
+                .andExpect(jsonPath("$.results[0].image").value(ADS_DTO.getImage()))
+                .andExpect(jsonPath("$.results[0].title").value(ADS_DTO.getTitle()));
     }
 
     @Test
@@ -211,7 +216,9 @@ class AdsControllerTest {
                 .andExpect(jsonPath("$.count").value(adsList.size()))
                 .andExpect(jsonPath("$.results[0].author").value(ADS_DTO.getAuthor()))
                 .andExpect(jsonPath("$.results[0].pk").value(ADS_DTO.getPk()))
-                .andExpect(jsonPath("$.results[0].price").value(ADS_DTO.getPrice()));
+                .andExpect(jsonPath("$.results[0].price").value(ADS_DTO.getPrice()))
+                .andExpect(jsonPath("$.results[0].image").value(ADS_DTO.getImage()))
+                .andExpect(jsonPath("$.results[0].title").value(ADS_DTO.getTitle()));
     }
 
     @Test
