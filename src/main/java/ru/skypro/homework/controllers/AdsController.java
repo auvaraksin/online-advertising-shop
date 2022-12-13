@@ -92,7 +92,7 @@ public class AdsController {
 
         String imageId = imageService.createImage(adsCreated, file);
         AdsDto adsDto = adsMapper.adsToAdsDto(adsCreated);
-        adsDto.setImage("/ads/image/" + imageId);
+        adsDto.setImage("/image/" + imageId);
 
         return ResponseEntity.ok(adsDto);
     }
@@ -373,27 +373,6 @@ public class AdsController {
 
         return ResponseEntity.ok(adsCommentMapper
                 .adsCommentListToResponseWrapperAdsCommentDto(adsCommentList.size(), adsCommentList));
-    }
-
-    /**
-     * Получение изображения по Id.
-     */
-    @Operation(
-            summary = "Получить изображение по ID",
-            tags = {"Объявления"},
-            responses = {
-                    @ApiResponse(responseCode = "200", description = "OK", content = @Content(mediaType = "*/*")),
-                    @ApiResponse(responseCode = "404", description = "Not Found", content = @Content(mediaType = ""))})
-    @GetMapping(value = "/image/{pk}")
-    public ResponseEntity<byte[]> getImage(
-            @Parameter(description = "ID изображения")
-            @PathVariable("pk") Integer pk
-    ) {
-        logger.info("Получение изображения {}", pk);
-
-        Image adsImage = imageService.findImage(Long.valueOf(pk));
-
-        return ResponseEntity.status(HttpStatus.OK).body(adsImage.getImage());
     }
 
     /**
