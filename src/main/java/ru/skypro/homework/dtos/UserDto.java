@@ -20,4 +20,5 @@ public class UserDto {
     @NotBlank(message = "phone must be filled")
     @Pattern(regexp = "\\+7[0-9]{10}", message = "phone number must be start from +7, then - 10 numbers")
     private String phone;
+    private String image;
 }
